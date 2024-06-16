@@ -186,9 +186,18 @@ private extension CameraManager {
 
         if captureSession.canAddOutput(captureVideoOutput) { captureSession?.addOutput(captureVideoOutput) }
     }
-    func startCaptureSession() { DispatchQueue(label: "cameraSession").async { [self] in
-        captureSession.startRunning()
-    }}
+    func startCaptureSession() {
+        if captureSession.isRunning == false {
+            DispatchQueue(label: "cameraSession").async { [self] in
+                captureSession.startRunning()
+            }
+        }
+    }
+    func stopCaptureSession() {
+        if captureSession.isRunning {
+            captureSession.stopRunning()
+        }
+    }
     func announceSetupCompletion() { DispatchQueue.main.async { [self] in
         objectWillChange.send()
     }}
